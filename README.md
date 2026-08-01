@@ -17,6 +17,11 @@ Which categories, sub-categories, and products are profitable — and which are 
 How much are returns cutting into profit?
 Who are the top customers, and how does revenue split by segment?
 
+
+## 🔄 Data Pipeline
+
+CSV → MySQL (temp table) → Data Cleaning → Fact & Dimension Tables → KPI Queries / Views → Power BI → Dashboard
+
 Tech stack:
 
 Layer                 	Tool
@@ -79,6 +84,15 @@ Overall business is profitable, but profit margin lags sales growth in some mont
 A small set of sub-categories account for disproportionate losses despite healthy sales volume — the classic Superstore "profitable-looking category, unprofitable sub-category" pattern.
 
 Returns are concentrated in a handful of products, and those products also tend to have below-average profit — suggesting returns are a real (not just cosmetic) drag on profitability.
+
+
+##  Key Learnings
+
+- Data modeling using fact and dimension tables
+- Writing optimized SQL queries and views
+- Using SQL for KPI calculations instead of DAX
+- Connecting MySQL with Power BI
+- Designing interactive dashboards
 
 
 
