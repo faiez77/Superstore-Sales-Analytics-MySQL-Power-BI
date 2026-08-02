@@ -10,7 +10,10 @@ Project overview:
 
 The goal of this project was to take a messy flat CSV (SuperStore_Sales_Dataset) export and turn it into a normalized relational database, then build a KPI dashboard that answers core retail questions:
 
-What are total sales, profit, orders, and return rate at a glance?
+What are total sales,
+profit, 
+orders,
+return rate at a glance?
 How does sales performance trend month over month?
 Which regions and states drive the most revenue?
 Which categories, sub-categories, and products are profitable — and which are causing losses?
