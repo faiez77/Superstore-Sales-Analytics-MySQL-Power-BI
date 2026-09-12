@@ -28,15 +28,13 @@ CREATE TABLE orders (
     sales DECIMAL(10,2),
     quantity INT,
     profit DECIMAL(10,2),
+    Payment_Mode VARCHAR(20),
 
     PRIMARY KEY (order_id, product_id),
 
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
-ALTER TABLE superstore.orders
-ADD Payment_Mode varchar(20);
- 
 
 CREATE TABLE returns (
     order_id VARCHAR(50) PRIMARY KEY,
@@ -70,6 +68,12 @@ CREATE TABLE temp_superstore (
     Payment_Mode varchar(20)
 );
 
+-- Note: LOAD DATA INFILE only reads from MySQL's designated secure
+-- folder (SHOW VARIABLES LIKE 'secure_file_priv' to find it), and on
+-- Windows always use forward slashes in the path — MySQL parses '\'
+-- inside string literals as an escape character, so
+-- 'C:\ProgramData\...' can get silently mangled. Update this path to
+-- point at your own copy of the CSV before running.
 show variables like "secure_file_priv";
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/SuperStore_Sales_Dataset - Copy.csv'
 INTO TABLE temp_superstore
@@ -179,8 +183,12 @@ SELECT
   HAVING total_Profit < 0
   ORDER BY Total_Profit ASC;
 
--- return  analysis (are return impacting profit)
-
+-- return analysis (are returns impacting profit)
+-- Note: this is an INNER JOIN, not a LEFT JOIN — the WHERE
+-- r.returned = '1' filter would silently discard any non-matching
+-- (NULL) rows a LEFT JOIN keeps, so it's effectively an inner join
+-- already. Written explicitly here for clarity: this query only
+-- looks at products that have at least one return.
 SELECT 
     p.product_name,
     COUNT(r.order_id) AS return_count,
@@ -189,7 +197,7 @@ SELECT
 FROM orders o
 JOIN products p 
     ON o.product_id = p.product_id
-LEFT JOIN returns r 
+JOIN returns r 
     ON o.order_id = r.order_id
 WHERE r.returned = '1'
 GROUP BY p.product_name
@@ -281,6 +289,3 @@ FROM orders o
 JOIN products p
     ON o.product_id = p.product_id
 GROUP BY p.category;
-
-
-
